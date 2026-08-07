@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapThumb - Modern YouTube & Video Thumbnail Downloader</title>
+    <!-- Tailwind CSS v3 via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            900: '#0F172A',
+                            800: '#1E293B',
+                            700: '#334155',
+                        },
+                        indigo: {
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                        },
+                        pink: {
+                            500: '#EC4899',
+                        },
+                        emerald: {
+                            500: '#10B981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F8FAFC;
+        }
+        /* Custom Skeleton Loading Animation */
+        .skeleton {
+            background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-16 md:pb-0">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-[#0F172A]/90 backdrop-blur-md px-4 lg:px-8 py-3.5">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid font-bold fa-bolt text-white text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">SnapThumb</span>
+                    <span class="text-[10px] text-slate-400 -mt-1 font-medium tracking-wider uppercase">Thumbnail Studio</span>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center space-x-2">
+                <button onclick="switchTab('history')" id="nav-btn-history" class="relative p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50" title="Download History">
+                    <i class="fa-regular fa-clock text-lg"></i>
+                    <span id="history-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-pink-500 text-white text-[10px] font-bold rounded-full items-center justify-center border-2 border-[#0F172A]">0</span>
+                </button>
+                <button onclick="toggleModal('batch-modal')" class="hidden sm:flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50 text-sm font-medium">
+                    <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                    <span>Batch Mode</span>
+                </button>
+                <button onclick="toggleModal('settings-modal')" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50" title="Settings">
+                    <i class="fa-solid fa-gear text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Clipboard Banner Toast -->
+    <div id="clipboard-toast" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md animate-bounce">
+        <div class="glass bg-slate-800/90 text-slate-100 p-3.5 rounded-2xl shadow-2xl flex items-center justify-between border border-indigo-500/40">
+            <div class="flex items-center space-x-3 truncate mr-2">
+                <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-link text-sm"></i>
+                </div>
+                <div class="truncate text-xs">
+                    <p class="font-semibold text-white">Video Link Detected</p>
+                    <p id="clipboard-text" class="text-slate-400 truncate">https://...</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 shrink-0">
+                <button onclick="pasteFromToast()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow transition">
+                    Paste & Fetch
+                </button>
+                <button onclick="dismissToast()" class="p-1 text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-4 py-6 sm:py-10 flex-grow w-full">
+
+        <!-- TAB 1: HOME (FETCHER) -->
+        <div id="tab-home" class="space-y-8">
+            <!-- Hero Header -->
+            <div class="text-center space-y-3 max-w-xl mx-auto">
+                <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/20 text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Ultra HD Thumbnail Grabber</span>
+                </span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+                    Download High Quality Video Thumbnails
+                </h1>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Supports YouTube, Vimeo, TikTok & Twitch. Extract full resolution thumbnails in seconds.
+                </p>
+            </div>
+
+            <!-- Input & Search Zone -->
+            <div class="max-w-2xl mx-auto space-y-3">
+                <div class="relative flex items-center">
+                    <div class="absolute left-4 text-slate-400 text-lg">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <input type="text" id="url-input" 
+                           placeholder="Paste YouTube video or thumbnail URL here..." 
+                           class="w-full pl-11 pr-24 py-4 rounded-2xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm sm:text-base shadow-inner"
+                           oninput="handleInputChange()">
+                    
+                    <div class="absolute right-2 flex items-center space-x-1">
+                        <button id="clear-btn" onclick="clearInput()" class="hidden px-2.5 py-1.5 text-slate-400 hover:text-white text-xs font-medium rounded-lg">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                        <button id="paste-btn" onclick="pasteClipboard()" class="px-3.5 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-xl border border-slate-600/50 transition-all">
+                            <i class="fa-regular fa-clipboard mr-1"></i> Paste
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="fetchThumbnail()" id="fetch-btn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center space-x-2 active:scale-[0.99]">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Fetch Thumbnail</span>
+                </button>
+            </div>
+
+            <!-- Loading Skeleton Screen -->
+            <div id="loading-state" class="hidden max-w-2xl mx-auto bg-slate-800/50 rounded-3xl p-4 sm:p-6 border border-slate-800 space-y-4">
+                <div class="aspect-video w-full rounded-2xl skeleton"></div>
+                <div class="h-6 w-1/2 skeleton rounded-lg"></div>
+                <div class="grid grid-cols-4 gap-2 pt-2">
+                    <div class="h-10 skeleton rounded-xl"></div>
+                    <div class="h-10 skeleton rounded-xl"></div>
+                    <div class="h-10 skeleton rounded-xl"></div>
+                    <div class="h-10 skeleton rounded-xl"></div>
+                </div>
+            </div>
+
+            <!-- Preview & Download Card -->
+            <div id="preview-card" class="hidden max-w-2xl mx-auto bg-slate-800/90 rounded-3xl p-4 sm:p-6 border border-slate-700/80 shadow-2xl space-y-5 transition-all duration-300">
+                
+                <!-- Main Image Container with Dynamic Glassmorphism Badge -->
+                <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 group border border-slate-700/50">
+                    <img id="thumbnail-preview-img" src="" alt="Thumbnail Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    
+                    <!-- Glassmorphism Quality Badge -->
+                    <div class="absolute top-3 left-3 glass px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-semibold text-white shadow-lg">
+                        <span id="badge-quality-dot" class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                        <span id="badge-resolution-text">1280 x 720 • HD</span>
+                    </div>
+
+                    <!-- Platform Icon Pill -->
+                    <div id="platform-badge" class="absolute top-3 right-3 glass px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-xs font-semibold text-white">
+                        <i class="fa-brands fa-youtube text-red-500"></i>
+                        <span>YouTube</span>
+                    </div>
+                </div>
+
+                <!-- Resolution Selector Pills -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Select Resolution</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="resolution-options-grid">
+                        <!-- Resolutions dynamically injected here -->
+                    </div>
+                </div>
+
+                <!-- Action Button Group -->
+                <div class="pt-2 space-y-3">
+                    <button id="main-download-btn" onclick="downloadImage()" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-indigo-500/20 transition flex items-center justify-center space-x-2 active:scale-[0.99]">
+                        <i class="fa-solid fa-circle-down text-lg"></i>
+                        <span id="download-btn-text">Download High Res (1280x720)</span>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="copyImageToClipboard()" id="copy-btn" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copy Link</span>
+                        </button>
+                        <button onclick="shareThumbnail()" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            <span>Share Image</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Supported Links / Tips -->
+            <div id="quick-tips" class="max-w-2xl mx-auto pt-6 border-t border-slate-800/80">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 text-center">Supported Platforms</h3>
+                <div class="flex flex-wrap justify-center gap-4 text-slate-400 text-xs">
+                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-youtube text-red-500 text-sm"></i> <span>YouTube</span></div>
+                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-vimeo text-blue-400 text-sm"></i> <span>Vimeo</span></div>
+                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-twitch text-purple-400 text-sm"></i> <span>Twitch</span></div>
+                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-tiktok text-pink-500 text-sm"></i> <span>TikTok</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: HISTORY GALLERY -->
+        <div id="tab-history" class="hidden space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Saved Downloads</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">Thumbnails stored in your browser session</p>
+                </div>
+                <button onclick="clearHistory()" class="px-3.5 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Clear All</span>
+                </button>
+            </div>
+
+            <!-- History Empty State -->
+            <div id="history-empty" class="text-center py-16 space-y-4">
+                <div class="w-16 h-16 mx-auto rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-2xl">
+                    <i class="fa-regular fa-image"></i>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-slate-300 font-medium">No saved thumbnails yet</p>
+                    <p class="text-slate-500 text-xs">Downloaded thumbnails will show up here automatically.</p>
+                </div>
+                <button onclick="switchTab('home')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition">
+                    Find Thumbnails
+                </button>
+            </div>
+
+            <!-- History Grid -->
+            <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass bg-[#0F172A]/90 border-t border-slate-800 z-40 px-6 py-2">
+        <div class="flex justify-around items-center">
+            <button onclick="switchTab('home')" id="mobile-nav-home" class="flex flex-col items-center space-y-1 text-indigo-400 font-medium">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px]">Home</span>
+            </button>
+            <button onclick="switchTab('history')" id="mobile-nav-history" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200">
+                <i class="fa-regular fa-clock text-lg"></i>
+                <span class="text-[10px]">History</span>
+            </button>
+            <button onclick="toggleModal('batch-modal')" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200">
+                <i class="fa-solid fa-layer-group text-lg"></i>
+                <span class="text-[10px]">Batch</span>
+            </button>
+            <button onclick="toggleModal('settings-modal')" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200">
+                <i class="fa-solid fa-gear text-lg"></i>
+                <span class="text-[10px]">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Batch Download Modal -->
+    <div id="batch-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-3xl p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                    <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                    <span>Batch Thumbnail Grabber</span>
+                </h3>
+                <button onclick="toggleModal('batch-modal')" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-slate-400 text-xs">Enter multiple video URLs (one per line) to process multiple thumbnails at once.</p>
+
+            <textarea id="batch-urls" rows="5" placeholder="https://www.youtube.com/watch?v=...\nhttps://youtu.be/..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs font-mono"></textarea>
+
+            <div class="flex justify-end space-x-3">
+                <button onclick="toggleModal('batch-modal')" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-xs font-semibold">Cancel</button>
+                <button onclick="processBatch()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-500/20">Process Links</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                    <i class="fa-solid fa-gear text-indigo-400"></i>
+                    <span>App Preferences</span>
+                </h3>
+                <button onclick="toggleModal('settings-modal')" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-300">
+                <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                    <div>
+                        <p class="font-semibold text-white">Default Resolution</p>
+                        <p class="text-slate-400 text-[11px]">Always pick highest quality by default</p>
+                    </div>
+                    <select id="setting-default-res" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 focus:outline-none text-xs">
+                        <option value="maxresdefault">Max HD (1280x720)</option>
+                        <option value="sddefault">SD (640x480)</option>
+                        <option value="hqdefault">Medium (480x360)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                    <div>
+                        <p class="font-semibold text-white">Auto-Detect Clipboard</p>
+                        <p class="text-slate-400 text-[11px]">Prompt to paste video URLs on launch</p>
+                    </div>
+                    <input type="checkbox" id="setting-autoclip" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer">
+                </div>
+
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-semibold text-white">Save History Locally</p>
+                        <p class="text-slate-400 text-[11px]">Retain recent downloads in browser storage</p>
+                    </div>
+                    <input type="checkbox" id="setting-savehistory" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer">
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="toggleModal('settings-modal')" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- App JavaScript Logic -->
+    <script>
+        // State Management
+        let currentThumbnailData = null;
+        let selectedResolutionKey = 'maxresdefault';
+        let downloadHistory = JSON.parse(localStorage.getItem('snapthumb_history') || '[]');
+
+        // Initialize App on DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            updateHistoryBadge();
+            renderHistoryGrid();
+            checkClipboardForVideoLink();
+        });
+
+        // Toggle UI Tabs
+        function switchTab(tabName) {
+            const homeTab = document.getElementById('tab-home');
+            const historyTab = document.getElementById('tab-history');
+            const navHistoryBtn = document.getElementById('nav-btn-history');
+            const mobileHome = document.getElementById('mobile-nav-home');
+            const mobileHistory = document.getElementById('mobile-nav-history');
+
+            if (tabName === 'home') {
+                homeTab.classList.remove('hidden');
+                historyTab.classList.add('hidden');
+                
+                mobileHome.classList.add('text-indigo-400');
+                mobileHome.classList.remove('text-slate-400');
+                mobileHistory.classList.add('text-slate-400');
+                mobileHistory.classList.remove('text-indigo-400');
+            } else {
+                homeTab.classList.add('hidden');
+                historyTab.classList.remove('hidden');
+
+                mobileHistory.classList.add('text-indigo-400');
+                mobileHistory.classList.remove('text-slate-400');
+                mobileHome.classList.add('text-slate-400');
+                mobileHome.classList.remove('text-indigo-400');
+            }
+        }
+
+        // Toggle Modal Visibility
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        // Handle URL Input Field Changes
+        function handleInputChange() {
+            const input = document.getElementById('url-input').value.trim();
+            const clearBtn = document.getElementById('clear-btn');
+            const pasteBtn = document.getElementById('paste-btn');
+
+            if (input.length > 0) {
+                clearBtn.classList.remove('hidden');
+                pasteBtn.classList.add('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                pasteBtn.classList.remove('hidden');
+            }
+        }
+
+        function clearInput() {
+            const input = document.getElementById('url-input');
+            input.value = '';
+            handleInputChange();
+            input.focus();
+        }
+
+        // Clipboard Actions
+        async function pasteClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    document.getElementById('url-input').value = text;
+                    handleInputChange();
+                    fetchThumbnail();
+                }
+            } catch (err) {
+                showToast('Clipboard access denied or unavailable', 'error');
+            }
+        }
+
+        async function checkClipboardForVideoLink() {
+            const autoClipEnabled = document.getElementById('setting-autoclip')?.checked ?? true;
+            if (!autoClipEnabled) return;
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    if (isValidVideoUrl(text)) {
+                        document.getElementById('clipboard-text').innerText = text;
+                        document.getElementById('clipboard-toast').classList.remove('hidden');
+                    }
+                }
+            } catch (e) {
+                // Clipboard read permission might be blocked silently
+            }
+        }
+
+        function pasteFromToast() {
+            const toastText = document.getElementById('clipboard-text').innerText;
+            document.getElementById('url-input').value = toastText;
+            handleInputChange();
+            dismissToast();
+            fetchThumbnail();
+        }
+
+        function dismissToast() {
+            document.getElementById('clipboard-toast').classList.add('hidden');
+        }
+
+        // URL Parser and Video ID Extractor
+        function extractVideoInfo(url) {
+            if (!url) return null;
+
+            // YouTube RegEx
+            const ytReg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const ytMatch = url.match(ytReg);
+            if (ytMatch && ytMatch[1]) {
+                return {
+                    platform: 'youtube',
+                    id: ytMatch[1],
+                    resolutions: [
+                        { key: 'maxresdefault', label: 'Max Quality', res: '1280 x 720', tag: 'HD', url: `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg` },
+                        { key: 'sddefault', label: 'Standard SD', res: '640 x 480', tag: 'SD', url: `https://img.youtube.com/vi/${ytMatch[1]}/sddefault.jpg` },
+                        { key: 'hqdefault', label: 'Medium', res: '480 x 360', tag: 'MD', url: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` },
+                        { key: 'mqdefault', label: 'Low', res: '320 x 180', tag: 'LQ', url: `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg` }
+                    ]
+                };
+            }
+
+            // Fallback for direct image link input
+            if (url.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
+                return {
+                    platform: 'direct',
+                    id: 'direct_' + Date.now(),
+                    resolutions: [
+                        { key: 'direct', label: 'Original Size', res: 'Native', tag: 'IMG', url: url }
+                    ]
+                };
+            }
+
+            return null;
+        }
+
+        function isValidVideoUrl(url) {
+            return extractVideoInfo(url) !== null;
+        }
+
+        // Fetch Thumbnail Process
+        async function fetchThumbnail() {
+            const inputUrl = document.getElementById('url-input').value.trim();
+            const videoInfo = extractVideoInfo(inputUrl);
+
+            if (!videoInfo) {
+                showToast('Please enter a valid YouTube or video URL', 'error');
+                return;
+            }
+
+            // Show Loading UI
+            document.getElementById('preview-card').classList.add('hidden');
+            document.getElementById('loading-state').classList.remove('hidden');
+
+            // Simulate Network delay for UX smoothness
+            await new Promise(r => setTimeout(r, 600));
+
+            currentThumbnailData = videoInfo;
+            selectedResolutionKey = document.getElementById('setting-default-res')?.value || 'maxresdefault';
+
+            // Ensure selected res key exists in available resolutions
+            if (!videoInfo.resolutions.find(r => r.key === selectedResolutionKey)) {
+                selectedResolutionKey = videoInfo.resolutions[0].key;
+            }
+
+            // Render Preview Card
+            renderPreviewCard();
+
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('preview-card').classList.remove('hidden');
+
+            // Save to Local History
+            saveToHistory(videoInfo);
+        }
+
+        // Render Preview & Options
+        function renderPreviewCard() {
+            const resOptionsGrid = document.getElementById('resolution-options-grid');
+            resOptionsGrid.innerHTML = '';
+
+            currentThumbnailData.resolutions.forEach(res => {
+                const isSelected = res.key === selectedResolutionKey;
+                const button = document.createElement('button');
+                button.className = `p-2.5 rounded-xl border text-left transition flex flex-col justify-between ${
+                    isSelected 
+                        ? 'bg-indigo-600/20 border-indigo-500 text-white ring-1 ring-indigo-500' 
+                        : 'bg-slate-900/60 border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+                }`;
+                button.onclick = () => selectResolution(res.key);
+                button.innerHTML = `
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-[11px] font-semibold">${res.label}</span>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded ${isSelected ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-400'} font-bold">${res.tag}</span>
+                    </div>
+                    <span class="text-[10px] opacity-75 mt-1">${res.res}</span>
+                `;
+                resOptionsGrid.appendChild(button);
+            });
+
+            updateActivePreviewImage();
+        }
+
+        function selectResolution(resKey) {
+            selectedResolutionKey = resKey;
+            renderPreviewCard();
+        }
+
+        function updateActivePreviewImage() {
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
+            const imgElement = document.getElementById('thumbnail-preview-img');
+            
+            // Set image preview
+            imgElement.src = activeRes.url;
+
+            // Update Glassmorphism Badge
+            document.getElementById('badge-resolution-text').innerText = `${activeRes.res} • ${activeRes.tag}`;
+
+            // Update Main Button Text
+            document.getElementById('download-btn-text').innerText = `Download (${activeRes.res})`;
+        }
+
+        // Download Action (Canvas-based Trigger for cross-origin saving fallback)
+        async function downloadImage() {
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
+            const btn = document.getElementById('main-download-btn');
+            const originalHTML = btn.innerHTML;
+
+            // Set Loading Feedback
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Preparing Download...</span>`;
+
+            try {
+                // Fetch image blob
+                const response = await fetch(activeRes.url);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = `SnapThumb_${currentThumbnailData.id}_${activeRes.tag}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+
+                // Success Feedback Animation
+                btn.className = btn.className.replace('bg-indigo-600', 'bg-emerald-500');
+                btn.innerHTML = `<i class="fa-solid fa-check text-lg"></i> <span>Downloaded Successfully!</span>`;
+                
+                showToast('Thumbnail saved to downloads', 'success');
+
+                setTimeout(() => {
+                    btn.className = btn.className.replace('bg-emerald-500', 'bg-indigo-600');
+                    btn.innerHTML = originalHTML;
+                }, 2500);
+
+            } catch (error) {
+                // Fallback for CORS restricted downloads
+                window.open(activeRes.url, '_blank');
+                btn.innerHTML = originalHTML;
+                showToast('Opened image in new tab for direct save', 'info');
+            }
+        }
+
+        // Copy Image Link to Clipboard
+        function copyImageToClipboard() {
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
+            
+            // Legacy/iframe compliant clipboard write
+            const tempInput = document.createElement('input');
+            tempInput.value = activeRes.url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('Direct image URL copied to clipboard!', 'success');
+        }
+
+        // Share Thumbnail
+        async function shareThumbnail() {
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Video Thumbnail',
+                        text: 'Check out this video thumbnail downloaded via SnapThumb',
+                        url: activeRes.url,
+                    });
+                } catch (err) {
+                    // Share dismissed
+                }
+            } else {
+                copyImageToClipboard();
+            }
+        }
+
+        // History Storage Logic
+        function saveToHistory(item) {
+            const shouldSave = document.getElementById('setting-savehistory')?.checked ?? true;
+            if (!shouldSave) return;
+
+            // Prevent duplicate entries
+            downloadHistory = downloadHistory.filter(h => h.id !== item.id);
+            
+            // Add new item to start
+            const activeRes = item.resolutions.find(r => r.key === selectedResolutionKey) || item.resolutions[0];
+            downloadHistory.unshift({
+                id: item.id,
+                platform: item.platform,
+                previewUrl: activeRes.url,
+                date: new Date().toLocaleDateString(),
+                resolutions: item.resolutions
+            });
+
+            // Cap history length at 20 items
+            if (downloadHistory.length > 20) downloadHistory.pop();
+
+            localStorage.setItem('snapthumb_history', JSON.stringify(downloadHistory));
+            updateHistoryBadge();
+            renderHistoryGrid();
+        }
+
+        function updateHistoryBadge() {
+            const badge = document.getElementById('history-badge');
+            if (downloadHistory.length > 0) {
+                badge.innerText = downloadHistory.length;
+                badge.classList.remove('hidden');
+                badge.classList.add('flex');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderHistoryGrid() {
+            const grid = document.getElementById('history-grid');
+            const emptyState = document.getElementById('history-empty');
+
+            if (downloadHistory.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = '';
+
+            downloadHistory.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg group flex flex-col justify-between';
+                card.innerHTML = `
+                    <div class="relative aspect-video w-full overflow-hidden bg-slate-900">
+                        <img src="${item.previewUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
+                        <div class="absolute top-2 right-2 glass px-2 py-1 rounded-md text-[10px] font-bold text-white uppercase">
+                            ${item.platform}
+                        </div>
+                    </div>
+                    <div class="p-3.5 flex items-center justify-between">
+                        <span class="text-xs text-slate-400 font-medium"><i class="fa-regular fa-calendar mr-1"></i> ${item.date}</span>
+                        <div class="flex space-x-1">
+                            <button onclick="reloadFromHistory(${index})" class="p-2 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-lg transition text-xs" title="Redownload">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                            <button onclick="removeFromHistory(${index})" class="p-2 bg-slate-700 text-slate-400 hover:bg-red-500/20 hover:text-red-400 rounded-lg transition text-xs" title="Delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function reloadFromHistory(index) {
+            const item = downloadHistory[index];
+            currentThumbnailData = item;
+            selectedResolutionKey = item.resolutions[0].key;
+            renderPreviewCard();
+            switchTab('home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function removeFromHistory(index) {
+            downloadHistory.splice(index, 1);
+            localStorage.setItem('snapthumb_history', JSON.stringify(downloadHistory));
+            updateHistoryBadge();
+            renderHistoryGrid();
+            showToast('Removed from history', 'info');
+        }
+
+        function clearHistory() {
+            downloadHistory = [];
+            localStorage.removeItem('snapthumb_history');
+            updateHistoryBadge();
+            renderHistoryGrid();
+            showToast('History cleared', 'info');
+        }
+
+        // Batch Processor
+        function processBatch() {
+            const rawText = document.getElementById('batch-urls').value;
+            const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+            if (lines.length === 0) {
+                showToast('Please insert at least one link', 'error');
+                return;
+            }
+
+            let count = 0;
+            lines.forEach(url => {
+                const info = extractVideoInfo(url);
+                if (info) {
+                    saveToHistory(info);
+                    count++;
+                }
+            });
+
+            toggleModal('batch-modal');
+            document.getElementById('batch-urls').value = '';
+
+            if (count > 0) {
+                showToast(`Processed ${count} thumbnails into history`, 'success');
+                switchTab('history');
+            } else {
+                showToast('No valid YouTube links found', 'error');
+            }
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-slate-800 border-slate-700 text-white';
+            let icon = 'fa-circle-info text-indigo-400';
+
+            if (type === 'success') {
+                bgClass = 'bg-slate-800 border-emerald-500/50 text-white';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                bgClass = 'bg-slate-800 border-red-500/50 text-white';
+                icon = 'fa-circle-exclamation text-red-400';
+            }
+
+            toast.className = `pointer-events-auto px-4 py-3 rounded-2xl border ${bgClass} shadow-xl flex items-center space-x-3 text-xs sm:text-sm font-medium animate-slide-up transition-all duration-300`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-base"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
