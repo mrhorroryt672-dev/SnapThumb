@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Website Title (Google Search me SnapThumb naam dikhane ke liye) -->
+    <!-- Website Title -->
     <title>SnapThumb - Modern YouTube & Video Thumbnail Downloader</title>
-
-    <!-- Inline Manifest FIX (No line breaks allowed in data URI) -->
-    <link rel="manifest" href='data:application/manifest+json,{"short_name":"SnapThumb","name":"SnapThumb App","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#000000","icons":[{"src":"https://via.placeholder.com/192","type":"image/png","sizes":"192x192"}]}'>
 
     <!-- Site Name Meta Tags -->
     <meta property="og:site_name" content="SnapThumb">
@@ -19,25 +16,25 @@
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
 
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0F172A">
     <!-- iOS Chrome / Safari support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
     <!-- ========================================== -->
-    <!-- SEO & SOCIAL MEDIA TAGS -->
+    <!-- SEO & SOCIAL MEDIA TAGS (SAFE) -->
     <!-- ========================================== -->
     <meta name="description" content="Download High Quality Video Thumbnails in seconds. Supports YouTube, Vimeo, TikTok & Twitch. SnapThumb is a modern Ultra HD thumbnail grabber.">
     <meta name="keywords" content="SnapThumb, youtube thumbnail downloader, video thumbnail grabber, hd thumbnail">
     <meta name="author" content="SnapThumb">
 
-    <!-- Open Graph Tags (WhatsApp & Social Media par link share karne ke liye) -->
+    <!-- Open Graph Tags (WhatsApp & Social Media) -->
     <meta property="og:title" content="SnapThumb - Modern YouTube & Video Thumbnail Downloader">
     <meta property="og:description" content="Ultra HD Thumbnail Grabber for modern creators. Download high resolution thumbnails instantly.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://akk232873-code.github.io/Thumb/">
 
-    <!-- Schema Markup (Google ko 'SnapThumb' naam batane ke liye) -->
+    <!-- Schema Markup (Google Search Branding) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -48,9 +45,10 @@
       "description": "Modern YouTube & Video Thumbnail Downloader"
     }
     </script>
-    <!-- ========================================== -->
     
-    <!-- Google Search Console Verification -->
+    <!-- ========================================== -->
+    <!-- Google Search Console Verification (SAFE) -->
+    <!-- ========================================== -->
     <meta name="google-site-verification" content="rcXlpyhhdAX0z5VxFrbpcp7GokH5CULK_TAaQTlz7qo" />
     
     <!-- Tailwind CSS v3 via CDN -->
@@ -274,7 +272,7 @@
                 <div class="pt-2 space-y-3">
                     <button id="main-download-btn" onclick="downloadImage()" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-indigo-500/20 transition flex items-center justify-center space-x-2 active:scale-[0.99]">
                         <i class="fa-solid fa-circle-down text-lg"></i>
-                        <span id="download-btn-text">Download High Res (1280x720)</span>
+                        <span id="download-btn-text">Download High Res</span>
                     </button>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -374,7 +372,7 @@
 
             <p class="text-slate-400 text-xs">Enter multiple video URLs (one per line) to process multiple thumbnails at once.</p>
 
-            <textarea id="batch-urls" rows="5" placeholder="https://www.youtube.com/watch?v=...\nhttps://youtu.be/..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs font-mono"></textarea>
+            <textarea id="batch-urls" rows="5" placeholder="Paste links here..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs font-mono"></textarea>
 
             <div class="flex justify-end space-x-3">
                 <button onclick="toggleModal('batch-modal')" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-xs font-semibold">Cancel</button>
@@ -903,23 +901,7 @@
             }, 3000);
         }
     </script>
-<script>
-  // Inline Service Worker register karna
-  if ('serviceWorker' in navigator) {
-    const swCode = `
-      self.addEventListener('install', (e) => self.skipWaiting());
-      self.addEventListener('activate', (e) => self.clients.claim());
-      self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request)));
-    `;
-    const blob = new Blob([swCode], { type: 'application/javascript' });
-    const swUrl = URL.createObjectURL(blob);
-
-    navigator.serviceWorker.register(swUrl)
-      .then(() => console.log('App ready to install!'))
-      .catch((err) => console.log('SW Error:', err));
-  }
-</script>
-    
 </body>
 </html>
+
 
