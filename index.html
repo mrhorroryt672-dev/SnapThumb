@@ -4,41 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-  <title>SnapThumb - Modern YouTube & Video Thumbnail Downloader</title>
-     <!-- Inline Manifest (Aapki site ko app banane ke liye) -->
-<link rel="manifest" href='data:application/manifest+json,{
-  "short_name": "SnapThumb",
-  "name": "SnapThumb App",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "icons": [
-    {
-      "src": "https://via.placeholder.com/192",
-      "type": "image/png",
-      "sizes": "192x192"
-    }
-  ]
-}'>
+    <!-- Website Title (Google Search me SnapThumb naam dikhane ke liye) -->
+    <title>SnapThumb - Modern YouTube & Video Thumbnail Downloader</title>
 
-<!-- Website Title (Google Search me SnapThumb naam dikhane ke liye) -->
-<title>SnapThumb - Thumbnail Studio</title>
+    <!-- Inline Manifest FIX (No line breaks allowed in data URI) -->
+    <link rel="manifest" href='data:application/manifest+json,{"short_name":"SnapThumb","name":"SnapThumb App","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#000000","icons":[{"src":"https://via.placeholder.com/192","type":"image/png","sizes":"192x192"}]}'>
 
-<!-- Site Name Meta Tags -->
-<meta property="og:site_name" content="SnapThumb">
-<meta name="application-name" content="SnapThumb">
-<meta name="apple-mobile-web-app-title" content="SnapThumb">
+    <!-- Site Name Meta Tags -->
+    <meta property="og:site_name" content="SnapThumb">
+    <meta name="application-name" content="SnapThumb">
+    <meta name="apple-mobile-web-app-title" content="SnapThumb">
 
-<!-- Logo Link (Google Search Logo ke liye) -->
-<link rel="icon" href="logo.png" type="image/png">
-<link rel="apple-touch-icon" href="logo.png">
+    <!-- Logo Link (Google Search Logo/Favicon ke liye) -->
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
 
     <meta name="theme-color" content="#000000">
-<!-- iOS Chrome / Safari support -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="SnapThumb">
+    <!-- iOS Chrome / Safari support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
     <!-- ========================================== -->
     <!-- SEO & SOCIAL MEDIA TAGS -->
@@ -66,7 +50,9 @@
     </script>
     <!-- ========================================== -->
     
+    <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="rcXlpyhhdAX0z5VxFrbpcp7GokH5CULK_TAaQTlz7qo" />
+    
     <!-- Tailwind CSS v3 via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
