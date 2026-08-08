@@ -3,55 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Website Title -->
     <title>SnapThumb - Modern YouTube & Video Thumbnail Downloader</title>
-
-    <!-- Site Name Meta Tags -->
-    <meta property="og:site_name" content="SnapThumb">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Website Name & Title Info -->
+    <title>SnapThumb - Modern Video Thumbnail Downloader</title>
     <meta name="application-name" content="SnapThumb">
     <meta name="apple-mobile-web-app-title" content="SnapThumb">
+    <meta property="og:site_name" content="SnapThumb">
 
-    <!-- Logo Link (Google Search Logo/Favicon ke liye) -->
+    <!-- Logo & Favicon Info -->
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="apple-touch-icon" href="logo.png">
-
     <meta name="theme-color" content="#0F172A">
-    <!-- iOS Chrome / Safari support -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    
-    <!-- ========================================== -->
-    <!-- SEO & SOCIAL MEDIA TAGS (SAFE) -->
-    <!-- ========================================== -->
-    <meta name="description" content="Download High Quality Video Thumbnails in seconds. Supports YouTube, Vimeo, TikTok & Twitch. SnapThumb is a modern Ultra HD thumbnail grabber.">
+
+    <!-- Search Ranking & SEO Information -->
+    <meta name="description" content="Download High Quality Video Thumbnails in seconds. Supports YouTube, Vimeo, TikTok & Twitch.">
     <meta name="keywords" content="SnapThumb, youtube thumbnail downloader, video thumbnail grabber, hd thumbnail">
     <meta name="author" content="SnapThumb">
+    <meta name="robots" content="index, follow">
 
-    <!-- Open Graph Tags (WhatsApp & Social Media) -->
-    <meta property="og:title" content="SnapThumb - Modern YouTube & Video Thumbnail Downloader">
-    <meta property="og:description" content="Ultra HD Thumbnail Grabber for modern creators. Download high resolution thumbnails instantly.">
+    <!-- Open Graph Social Tags -->
+    <meta property="og:title" content="SnapThumb - Modern Video Thumbnail Downloader">
+    <meta property="og:description" content="Download High Quality Video Thumbnails in seconds.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://akk232873-code.github.io/Thumb/">
 
-    <!-- Schema Markup (Google Search Branding) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "SnapThumb",
-      "alternateName": "Thumbnail Studio",
-      "url": "https://akk232873-code.github.io/Thumb/",
-      "description": "Modern YouTube & Video Thumbnail Downloader"
-    }
-    </script>
-    
-    <!-- ========================================== -->
-    <!-- Google Search Console Verification (SAFE) -->
-    <!-- ========================================== -->
+    <!-- Google Search Console Verification Tag -->
     <meta name="google-site-verification" content="rcXlpyhhdAX0z5VxFrbpcp7GokH5CULK_TAaQTlz7qo" />
     
-    <!-- Tailwind CSS v3 via CDN -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -59,21 +42,10 @@
             theme: {
                 extend: {
                     colors: {
-                        slate: {
-                            900: '#0F172A',
-                            800: '#1E293B',
-                            700: '#334155',
-                        },
-                        indigo: {
-                            500: '#6366F1',
-                            600: '#4F46E5',
-                        },
-                        pink: {
-                            500: '#EC4899',
-                        },
-                        emerald: {
-                            500: '#10B981',
-                        }
+                        slate: { 900: '#0F172A', 800: '#1E293B', 700: '#334155' },
+                        indigo: { 500: '#6366F1', 600: '#4F46E5' },
+                        pink: { 500: '#EC4899' },
+                        emerald: { 500: '#10B981' }
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -85,14 +57,15 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0F172A;
             color: #F8FAFC;
+            scroll-behavior: smooth;
         }
-        /* Custom Skeleton Loading Animation */
+        /* Loader Animation */
         .skeleton {
             background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
             background-size: 200% 100%;
@@ -109,29 +82,20 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0F172A;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between pb-16 md:pb-0">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
     <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-40 border-b border-slate-800 bg-[#0F172A]/90 backdrop-blur-md px-4 lg:px-8 py-3.5">
-        <div class="max-w-5xl mx-auto flex items-center justify-between">
-            <!-- Brand Logo -->
+    <header class="sticky top-0 z-50 border-b border-slate-800 bg-[#0F172A]/90 backdrop-blur-md px-4 lg:px-8 py-3.5">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            
+            <!-- Original Brand Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                     <i class="fa-solid font-bold fa-bolt text-white text-xl"></i>
@@ -143,12 +107,12 @@
             </div>
 
             <!-- Header Action Controls -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 md:space-x-3">
                 <button onclick="switchTab('history')" id="nav-btn-history" class="relative p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50" title="Download History">
                     <i class="fa-regular fa-clock text-lg"></i>
-                    <span id="history-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-pink-500 text-white text-[10px] font-bold rounded-full items-center justify-center border-2 border-[#0F172A]">0</span>
+                    <span id="history-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-pink-500 text-white text-[9px] md:text-[10px] font-bold rounded-full items-center justify-center border-2 border-[#0F172A]">0</span>
                 </button>
-                <button onclick="toggleModal('batch-modal')" class="hidden sm:flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50 text-sm font-medium">
+                <button onclick="toggleModal('batch-modal')" class="hidden sm:flex items-center space-x-2 px-3.5 py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all border border-slate-700/50 text-sm font-medium">
                     <i class="fa-solid fa-layer-group text-indigo-400"></i>
                     <span>Batch Mode</span>
                 </button>
@@ -159,184 +123,281 @@
         </div>
     </header>
 
-    <!-- Clipboard Banner Toast -->
-    <div id="clipboard-toast" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md animate-bounce">
-        <div class="glass bg-slate-800/90 text-slate-100 p-3.5 rounded-2xl shadow-2xl flex items-center justify-between border border-indigo-500/40">
-            <div class="flex items-center space-x-3 truncate mr-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
-                    <i class="fa-solid fa-link text-sm"></i>
-                </div>
-                <div class="truncate text-xs">
-                    <p class="font-semibold text-white">Video Link Detected</p>
-                    <p id="clipboard-text" class="text-slate-400 truncate">https://...</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2 shrink-0">
-                <button onclick="pasteFromToast()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow transition">
-                    Paste & Fetch
-                </button>
-                <button onclick="dismissToast()" class="p-1 text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-sm"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Container -->
-    <main class="max-w-4xl mx-auto px-4 py-6 sm:py-10 flex-grow w-full">
+    <!-- Main Content Area -->
+    <main class="w-full flex-grow">
 
         <!-- TAB 1: HOME (FETCHER) -->
-        <div id="tab-home" class="space-y-8">
-            <!-- Hero Header -->
-            <div class="text-center space-y-3 max-w-xl mx-auto">
-                <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/20 text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Ultra HD Thumbnail Grabber</span>
-                </span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                    Download High Quality Video Thumbnails
-                </h1>
-                <p class="text-slate-400 text-sm sm:text-base">
-                    Supports YouTube, Vimeo, TikTok & Twitch. Extract full resolution thumbnails in seconds.
-                </p>
-            </div>
+        <div id="tab-home">
+            
+            <!-- Hero Section with Background Image -->
+            <section class="relative w-full pt-16 pb-20 md:pt-20 md:pb-24 border-b border-slate-800 shadow-2xl">
+                <!-- User requested background image with professional overlay -->
+                <img src="https://images.pexels.com/photos/33440447/pexels-photo-33440447.jpeg" alt="Background" class="absolute inset-0 w-full h-full object-cover opacity-20 z-0 mix-blend-luminosity">
+                <div class="absolute inset-0 bg-gradient-to-b from-[#0F172A]/80 via-[#0F172A]/90 to-[#0F172A] z-0"></div>
 
-            <!-- Input & Search Zone -->
-            <div class="max-w-2xl mx-auto space-y-3">
-                <div class="relative flex items-center">
-                    <div class="absolute left-4 text-slate-400 text-lg">
-                        <i class="fa-solid fa-link"></i>
-                    </div>
-                    <input type="text" id="url-input" 
-                           placeholder="Paste YouTube video or thumbnail URL here..." 
-                           class="w-full pl-11 pr-24 py-4 rounded-2xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm sm:text-base shadow-inner"
-                           oninput="handleInputChange()">
+                <div class="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-6">
                     
-                    <div class="absolute right-2 flex items-center space-x-1">
-                        <button id="clear-btn" onclick="clearInput()" class="hidden px-2.5 py-1.5 text-slate-400 hover:text-white text-xs font-medium rounded-lg">
-                            <i class="fa-solid fa-xmark text-sm"></i>
-                        </button>
-                        <button id="paste-btn" onclick="pasteClipboard()" class="px-3.5 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-xl border border-slate-600/50 transition-all">
-                            <i class="fa-regular fa-clipboard mr-1"></i> Paste
-                        </button>
+                    <!-- Trust Badge -->
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-[10px] md:text-xs font-semibold uppercase tracking-widest backdrop-blur-sm mb-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Trusted by 10,000+ Creators</span>
                     </div>
-                </div>
-
-                <button onclick="fetchThumbnail()" id="fetch-btn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center space-x-2 active:scale-[0.99]">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Fetch Thumbnail</span>
-                </button>
-            </div>
-
-            <!-- Loading Skeleton Screen -->
-            <div id="loading-state" class="hidden max-w-2xl mx-auto bg-slate-800/50 rounded-3xl p-4 sm:p-6 border border-slate-800 space-y-4">
-                <div class="aspect-video w-full rounded-2xl skeleton"></div>
-                <div class="h-6 w-1/2 skeleton rounded-lg"></div>
-                <div class="grid grid-cols-4 gap-2 pt-2">
-                    <div class="h-10 skeleton rounded-xl"></div>
-                    <div class="h-10 skeleton rounded-xl"></div>
-                    <div class="h-10 skeleton rounded-xl"></div>
-                    <div class="h-10 skeleton rounded-xl"></div>
-                </div>
-            </div>
-
-            <!-- Preview & Download Card -->
-            <div id="preview-card" class="hidden max-w-2xl mx-auto bg-slate-800/90 rounded-3xl p-4 sm:p-6 border border-slate-700/80 shadow-2xl space-y-5 transition-all duration-300">
-                
-                <!-- Main Image Container with Dynamic Glassmorphism Badge -->
-                <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 group border border-slate-700/50">
-                    <img id="thumbnail-preview-img" src="" alt="Thumbnail Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                     
-                    <!-- Glassmorphism Quality Badge -->
-                    <div class="absolute top-3 left-3 glass px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-semibold text-white shadow-lg">
-                        <span id="badge-quality-dot" class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
-                        <span id="badge-resolution-text">1280 x 720 • HD</span>
-                    </div>
+                    <!-- Headlines -->
+                    <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                        Download High Quality <br class="hidden sm:block"> 
+                        <span class="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">Video Thumbnails for Free</span>
+                    </h1>
+                    <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto">
+                        Extract ultra HD (1080p, 4K) thumbnails from YouTube, Vimeo, TikTok & Twitch instantly. No watermarks, completely free.
+                    </p>
 
-                    <!-- Platform Icon Pill -->
-                    <div id="platform-badge" class="absolute top-3 right-3 glass px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-xs font-semibold text-white">
-                        <i class="fa-brands fa-youtube text-red-500"></i>
-                        <span>YouTube</span>
+                    <!-- Original Input & Search Zone -->
+                    <div class="max-w-2xl mx-auto mt-8 space-y-3">
+                        <div class="relative flex items-center shadow-2xl shadow-indigo-500/10 rounded-2xl">
+                            <div class="absolute left-4 text-slate-400 text-lg">
+                                <i class="fa-solid fa-link"></i>
+                            </div>
+                            <input type="text" id="url-input" 
+                                   placeholder="Paste YouTube video or thumbnail URL here..." 
+                                   class="w-full pl-11 pr-24 py-4 md:py-5 rounded-2xl bg-slate-800/90 backdrop-blur-md border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm sm:text-base"
+                                   oninput="handleInputChange()">
+                            
+                            <div class="absolute right-2 flex items-center space-x-1">
+                                <button id="clear-btn" onclick="clearInput()" class="hidden px-2.5 py-1.5 text-slate-400 hover:text-white text-xs font-medium rounded-lg">
+                                    <i class="fa-solid fa-xmark text-sm md:text-base"></i>
+                                </button>
+                                <button id="paste-btn" onclick="pasteClipboard()" class="px-3.5 py-2 md:py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs md:text-sm font-semibold rounded-xl border border-slate-600/50 transition-all">
+                                    <i class="fa-regular fa-clipboard mr-1"></i> Paste
+                                </button>
+                            </div>
+                        </div>
+
+                        <button onclick="fetchThumbnail()" id="fetch-btn" class="w-full py-4 md:py-5 rounded-2xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center space-x-2 active:scale-[0.99]">
+                            <i class="fa-solid fa-download text-lg"></i>
+                            <span>Fetch Thumbnail</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="max-w-6xl mx-auto px-4 -mt-8 relative z-20 pb-16">
+                <!-- Loading Skeleton Screen -->
+                <div id="loading-state" class="hidden max-w-2xl mx-auto bg-slate-800/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 border border-slate-700 shadow-2xl space-y-4">
+                    <div class="aspect-video w-full rounded-2xl skeleton"></div>
+                    <div class="h-6 w-1/2 skeleton rounded-lg"></div>
+                    <div class="grid grid-cols-4 gap-2 pt-2">
+                        <div class="h-10 skeleton rounded-xl"></div>
+                        <div class="h-10 skeleton rounded-xl"></div>
+                        <div class="h-10 skeleton rounded-xl"></div>
+                        <div class="h-10 skeleton rounded-xl"></div>
                     </div>
                 </div>
 
-                <!-- Resolution Selector Pills -->
-                <div class="space-y-2">
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Select Resolution</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="resolution-options-grid">
-                        <!-- Resolutions dynamically injected here -->
+                <!-- Preview & Download Card -->
+                <div id="preview-card" class="hidden max-w-2xl mx-auto bg-slate-800/95 backdrop-blur-xl rounded-3xl p-4 sm:p-6 border border-slate-700 shadow-2xl space-y-5 transition-all duration-300">
+                    
+                    <!-- Main Image Container -->
+                    <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 group border border-slate-700/50">
+                        <img id="thumbnail-preview-img" src="" alt="Thumbnail Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        
+                        <!-- Quality Badge -->
+                        <div class="absolute top-3 left-3 glass px-3 py-1.5 rounded-full flex items-center space-x-2 text-[10px] md:text-xs font-semibold text-white shadow-lg">
+                            <span id="badge-quality-dot" class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                            <span id="badge-resolution-text">1280 x 720 • HD</span>
+                        </div>
+
+                        <!-- Platform Badge -->
+                        <div id="platform-badge" class="absolute top-3 right-3 glass px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-[10px] md:text-xs font-semibold text-white">
+                            <i class="fa-brands fa-youtube text-red-500"></i>
+                            <span>YouTube</span>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Action Button Group -->
-                <div class="pt-2 space-y-3">
-                    <button id="main-download-btn" onclick="downloadImage()" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-indigo-500/20 transition flex items-center justify-center space-x-2 active:scale-[0.99]">
-                        <i class="fa-solid fa-circle-down text-lg"></i>
-                        <span id="download-btn-text">Download High Res</span>
-                    </button>
+                    <!-- Resolution Selector -->
+                    <div class="space-y-2">
+                        <label class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wider block">Select Resolution</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="resolution-options-grid">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="copyImageToClipboard()" id="copy-btn" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>Copy Link</span>
+                    <!-- Action Button Group -->
+                    <div class="pt-2 space-y-3">
+                        <button id="main-download-btn" onclick="downloadImage()" class="w-full py-3.5 md:py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm md:text-base shadow-lg shadow-indigo-500/20 transition flex items-center justify-center space-x-2 active:scale-[0.99]">
+                            <i class="fa-solid fa-circle-down text-lg"></i>
+                            <span id="download-btn-text">Download High Res (1280x720)</span>
                         </button>
-                        <button onclick="shareThumbnail()" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-share-nodes"></i>
-                            <span>Share Image</span>
-                        </button>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="copyImageToClipboard()" id="copy-btn" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy Link</span>
+                            </button>
+                            <button onclick="shareThumbnail()" class="py-3 px-4 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-600/50 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span>Share Image</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Supported Links / Tips -->
-            <div id="quick-tips" class="max-w-2xl mx-auto pt-6 border-t border-slate-800/80">
-                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 text-center">Supported Platforms</h3>
-                <div class="flex flex-wrap justify-center gap-4 text-slate-400 text-xs">
-                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-youtube text-red-500 text-sm"></i> <span>YouTube</span></div>
-                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-vimeo text-blue-400 text-sm"></i> <span>Vimeo</span></div>
-                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-twitch text-purple-400 text-sm"></i> <span>Twitch</span></div>
-                    <div class="flex items-center space-x-1.5"><i class="fa-brands fa-tiktok text-pink-500 text-sm"></i> <span>TikTok</span></div>
+            <!-- SEO & Professional Sections -->
+            <!-- How to Use Section -->
+            <section class="border-t border-slate-800 bg-[#0F172A] py-16 px-4">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white">How to Download Thumbnails?</h2>
+                        <p class="text-slate-400 mt-2 text-sm">Save your favorite video thumbnails in 3 simple steps.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 text-center hover:bg-slate-800 transition">
+                            <div class="w-14 h-14 mx-auto bg-indigo-500/10 text-indigo-400 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-indigo-500/20">
+                                <i class="fa-solid fa-link"></i>
+                            </div>
+                            <h3 class="text-white font-bold text-lg mb-2">1. Copy Link</h3>
+                            <p class="text-slate-400 text-sm">Find your desired video on YouTube or other platforms and copy the URL from the address bar or share button.</p>
+                        </div>
+                        <div class="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 text-center hover:bg-slate-800 transition">
+                            <div class="w-14 h-14 mx-auto bg-pink-500/10 text-pink-400 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-pink-500/20">
+                                <i class="fa-regular fa-paste"></i>
+                            </div>
+                            <h3 class="text-white font-bold text-lg mb-2">2. Paste URL</h3>
+                            <p class="text-slate-400 text-sm">Paste the copied link into our search box above and click the "Fetch Thumbnail" button.</p>
+                        </div>
+                        <div class="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 text-center hover:bg-slate-800 transition">
+                            <div class="w-14 h-14 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20">
+                                <i class="fa-solid fa-download"></i>
+                            </div>
+                            <h3 class="text-white font-bold text-lg mb-2">3. Download Image</h3>
+                            <p class="text-slate-400 text-sm">Choose your preferred resolution (up to 4K Max Quality) and save the image directly to your device.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="bg-slate-900/50 py-16 px-4">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <span class="text-indigo-400 text-xs font-bold tracking-widest uppercase">Features</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mt-2">Why Choose SnapThumb?</h2>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                        <div class="flex items-start space-x-4 p-5 rounded-2xl bg-slate-800/30 border border-slate-700/30">
+                            <i class="fa-solid fa-bolt text-indigo-400 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Lightning Fast</h4>
+                                <p class="text-slate-400 text-xs md:text-sm">Direct API extraction ensures zero wait times. Images are fetched instantly without server delays.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-5 rounded-2xl bg-slate-800/30 border border-slate-700/30">
+                            <i class="fa-solid fa-image text-pink-400 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Max HD & 4K Quality</h4>
+                                <p class="text-slate-400 text-xs md:text-sm">Get the absolute highest quality thumbnail uploaded by the creator, including 1080p and 4K resolutions.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-5 rounded-2xl bg-slate-800/30 border border-slate-700/30">
+                            <i class="fa-solid fa-ban text-emerald-400 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">No Watermarks</h4>
+                                <p class="text-slate-400 text-xs md:text-sm">We provide clean, original images exactly as they were uploaded. No logos or hidden watermarks.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-5 rounded-2xl bg-slate-800/30 border border-slate-700/30">
+                            <i class="fa-brands fa-youtube text-red-500 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Multi-Platform Support</h4>
+                                <p class="text-slate-400 text-xs md:text-sm">Seamlessly works with standard YouTube videos, Shorts, Vimeo, Twitch, and TikTok links.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="py-16 px-4">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white">Frequently Asked Questions</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+                            <h4 class="text-white font-semibold text-sm md:text-base">Is this tool completely free to use?</h4>
+                            <p class="text-slate-400 mt-2 text-xs md:text-sm">Yes, SnapThumb is 100% free. You can download as many thumbnails as you want without any hidden limits or required registrations.</p>
+                        </div>
+                        <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+                            <h4 class="text-white font-semibold text-sm md:text-base">Where are the images saved?</h4>
+                            <p class="text-slate-400 mt-2 text-xs md:text-sm">When you click 'Download', the image is directly saved to your device's default Downloads folder or your mobile Gallery.</p>
+                        </div>
+                        <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+                            <h4 class="text-white font-semibold text-sm md:text-base">Is it legal to use other people's thumbnails?</h4>
+                            <p class="text-slate-400 mt-2 text-xs md:text-sm">You can freely download them for personal use, inspiration, or design references. However, reusing them directly on your own videos without modification may cause copyright issues on platforms like YouTube.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- TAB 2: HISTORY GALLERY -->
-        <div id="tab-history" class="hidden space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-white">Saved Downloads</h2>
-                    <p class="text-slate-400 text-xs sm:text-sm">Thumbnails stored in your browser session</p>
+        <div id="tab-history" class="hidden px-4 py-8">
+            <div class="max-w-5xl mx-auto space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Saved Downloads</h2>
+                        <p class="text-slate-400 text-xs sm:text-sm">Thumbnails stored in your browser session.</p>
+                    </div>
+                    <button onclick="clearHistory()" class="px-3 md:px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="hidden sm:inline">Clear History</span>
+                        <span class="sm:hidden">Clear</span>
+                    </button>
                 </div>
-                <button onclick="clearHistory()" class="px-3.5 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5">
-                    <i class="fa-solid fa-trash-can"></i>
-                    <span>Clear All</span>
-                </button>
-            </div>
 
-            <!-- History Empty State -->
-            <div id="history-empty" class="text-center py-16 space-y-4">
-                <div class="w-16 h-16 mx-auto rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-2xl">
-                    <i class="fa-regular fa-image"></i>
+                <!-- Empty State -->
+                <div id="history-empty" class="text-center py-16 space-y-4">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-2xl">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-slate-300 font-medium">No saved thumbnails yet</p>
+                        <p class="text-slate-500 text-xs">Downloaded thumbnails will show up here automatically.</p>
+                    </div>
+                    <button onclick="switchTab('home')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition">
+                        Find Thumbnails
+                    </button>
                 </div>
-                <div class="space-y-1">
-                    <p class="text-slate-300 font-medium">No saved thumbnails yet</p>
-                    <p class="text-slate-500 text-xs">Downloaded thumbnails will show up here automatically.</p>
-                </div>
-                <button onclick="switchTab('home')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition">
-                    Find Thumbnails
-                </button>
-            </div>
 
-            <!-- History Grid -->
-            <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Injected via JavaScript -->
+                <!-- History Grid -->
+                <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
-
     </main>
 
+    <!-- Footer Area -->
+    <footer class="border-t border-slate-800 bg-[#0F172A] py-8 text-center relative z-20">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center">
+            <div class="flex items-center space-x-2 mb-4 opacity-50">
+                <i class="fa-solid fa-bolt text-white"></i>
+                <span class="text-white font-bold tracking-tight">SnapThumb</span>
+            </div>
+            <p class="text-slate-500 text-xs md:text-sm mb-4">
+                © 2026 SnapThumb. All rights reserved.
+            </p>
+            <div class="flex space-x-4 text-slate-400 text-xs">
+                <a href="#" class="hover:text-indigo-400 transition">Privacy Policy</a>
+                <span>•</span>
+                <a href="#" class="hover:text-indigo-400 transition">Terms of Service</a>
+                <span>•</span>
+                <a href="#" class="hover:text-indigo-400 transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
     <!-- Mobile Bottom Navigation Bar -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass bg-[#0F172A]/90 border-t border-slate-800 z-40 px-6 py-2">
+    <nav class="sm:hidden fixed bottom-0 left-0 right-0 glass bg-[#0F172A]/90 border-t border-slate-800 z-50 px-6 py-2 pb-6">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" id="mobile-nav-home" class="flex flex-col items-center space-y-1 text-indigo-400 font-medium">
                 <i class="fa-solid fa-house text-lg"></i>
@@ -357,85 +418,61 @@
         </div>
     </nav>
 
+    <!-- Modals -->
     <!-- Batch Download Modal -->
-    <div id="batch-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-3xl p-6 space-y-5 shadow-2xl relative">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-layer-group text-indigo-400"></i>
-                    <span>Batch Thumbnail Grabber</span>
-                </h3>
-                <button onclick="toggleModal('batch-modal')" class="text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    <div id="batch-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-layer-group text-indigo-400 mr-2"></i>Batch Downloader</h3>
+                <button onclick="toggleModal('batch-modal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <p class="text-slate-400 text-xs">Enter multiple video URLs (one per line) to process multiple thumbnails at once.</p>
-
-            <textarea id="batch-urls" rows="5" placeholder="Paste links here..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs font-mono"></textarea>
-
+            <p class="text-slate-400 text-xs mb-4">Enter multiple video URLs (one per line) to process multiple thumbnails at once.</p>
+            <textarea id="batch-urls" rows="5" placeholder="https://youtube.com/watch?v=...\nhttps://youtu.be/..." class="w-full p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-xs font-mono mb-4"></textarea>
             <div class="flex justify-end space-x-3">
                 <button onclick="toggleModal('batch-modal')" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-xs font-semibold">Cancel</button>
-                <button onclick="processBatch()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-500/20">Process Links</button>
+                <button onclick="processBatch()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold">Process Links</button>
             </div>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl relative">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-gear text-indigo-400"></i>
-                    <span>App Preferences</span>
-                </h3>
-                <button onclick="toggleModal('settings-modal')" class="text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    <div id="settings-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-gear text-indigo-400 mr-2"></i>App Preferences</h3>
+                <button onclick="toggleModal('settings-modal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <div class="space-y-4 text-xs text-slate-300">
-                <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+            <div class="space-y-4 text-xs text-slate-300 mb-4">
+                <div class="flex items-center justify-between border-b border-slate-700/50 pb-3">
                     <div>
                         <p class="font-semibold text-white">Default Resolution</p>
-                        <p class="text-slate-400 text-[11px]">Always pick highest quality by default</p>
+                        <p class="text-slate-400 text-[11px]">Always pick highest quality</p>
                     </div>
-                    <select id="setting-default-res" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 focus:outline-none text-xs">
+                    <select id="setting-default-res" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 outline-none">
                         <option value="maxresdefault">Max HD (1280x720)</option>
                         <option value="sddefault">SD (640x480)</option>
-                        <option value="hqdefault">Medium (480x360)</option>
                     </select>
                 </div>
-
-                <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                <div class="flex items-center justify-between pb-2">
                     <div>
-                        <p class="font-semibold text-white">Auto-Detect Clipboard</p>
-                        <p class="text-slate-400 text-[11px]">Prompt to paste video URLs on launch</p>
+                        <p class="font-semibold text-white">Save History</p>
+                        <p class="text-slate-400 text-[11px]">Keep recent downloads in browser</p>
                     </div>
-                    <input type="checkbox" id="setting-autoclip" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer">
-                </div>
-
-                <div class="flex items-center justify-between py-2">
-                    <div>
-                        <p class="font-semibold text-white">Save History Locally</p>
-                        <p class="text-slate-400 text-[11px]">Retain recent downloads in browser storage</p>
-                    </div>
-                    <input type="checkbox" id="setting-savehistory" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer">
+                    <input type="checkbox" id="setting-savehistory" checked class="w-4 h-4 accent-indigo-500 rounded">
                 </div>
             </div>
-
-            <div class="flex justify-end pt-2">
-                <button onclick="toggleModal('settings-modal')" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold">Done</button>
+            <div class="flex justify-end">
+                <button onclick="toggleModal('settings-modal')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold">Done</button>
             </div>
         </div>
     </div>
 
     <!-- Notification Toast Container -->
-    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-24 sm:bottom-6 right-6 z-[70] flex flex-col space-y-2 pointer-events-none"></div>
 
     <!-- App JavaScript Logic -->
     <script>
-        // State Management
+        // State variables
         let currentThumbnailData = null;
         let selectedResolutionKey = 'maxresdefault';
         let downloadHistory = JSON.parse(localStorage.getItem('snapthumb_history') || '[]');
@@ -444,65 +481,48 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateHistoryBadge();
             renderHistoryGrid();
-            checkClipboardForVideoLink();
         });
 
         // Toggle UI Tabs
         function switchTab(tabName) {
             const homeTab = document.getElementById('tab-home');
             const historyTab = document.getElementById('tab-history');
-            const navHistoryBtn = document.getElementById('nav-btn-history');
             const mobileHome = document.getElementById('mobile-nav-home');
             const mobileHistory = document.getElementById('mobile-nav-history');
 
             if (tabName === 'home') {
                 homeTab.classList.remove('hidden');
                 historyTab.classList.add('hidden');
-                
-                mobileHome.classList.add('text-indigo-400');
-                mobileHome.classList.remove('text-slate-400');
-                mobileHistory.classList.add('text-slate-400');
-                mobileHistory.classList.remove('text-indigo-400');
+                if(mobileHome) mobileHome.classList.replace('text-slate-400', 'text-indigo-400');
+                if(mobileHistory) mobileHistory.classList.replace('text-indigo-400', 'text-slate-400');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 homeTab.classList.add('hidden');
                 historyTab.classList.remove('hidden');
-
-                mobileHistory.classList.add('text-indigo-400');
-                mobileHistory.classList.remove('text-slate-400');
-                mobileHome.classList.add('text-slate-400');
-                mobileHome.classList.remove('text-indigo-400');
+                if(mobileHistory) mobileHistory.classList.replace('text-slate-400', 'text-indigo-400');
+                if(mobileHome) mobileHome.classList.replace('text-indigo-400', 'text-slate-400');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        // Toggle Modal Visibility
+        // Toggle Modals
         function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.toggle('hidden');
+            document.getElementById(modalId).classList.toggle('hidden');
         }
 
-        // Handle URL Input Field Changes
+        // Handle URL Input changes (Show/Hide Clear Button)
         function handleInputChange() {
             const input = document.getElementById('url-input').value.trim();
-            const clearBtn = document.getElementById('clear-btn');
-            const pasteBtn = document.getElementById('paste-btn');
-
-            if (input.length > 0) {
-                clearBtn.classList.remove('hidden');
-                pasteBtn.classList.add('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-                pasteBtn.classList.remove('hidden');
-            }
+            document.getElementById('clear-btn').classList.toggle('hidden', input.length === 0);
+            document.getElementById('paste-btn').classList.toggle('hidden', input.length > 0);
         }
 
         function clearInput() {
-            const input = document.getElementById('url-input');
-            input.value = '';
+            document.getElementById('url-input').value = '';
             handleInputChange();
-            input.focus();
         }
 
-        // Clipboard Actions
+        // Paste from clipboard
         async function pasteClipboard() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -512,75 +532,29 @@
                     fetchThumbnail();
                 }
             } catch (err) {
-                showToast('Clipboard access denied or unavailable', 'error');
+                showToast('Clipboard access denied', 'error');
             }
         }
 
-        async function checkClipboardForVideoLink() {
-            const autoClipEnabled = document.getElementById('setting-autoclip')?.checked ?? true;
-            if (!autoClipEnabled) return;
-
-            try {
-                if (navigator.clipboard && navigator.clipboard.readText) {
-                    const text = await navigator.clipboard.readText();
-                    if (isValidVideoUrl(text)) {
-                        document.getElementById('clipboard-text').innerText = text;
-                        document.getElementById('clipboard-toast').classList.remove('hidden');
-                    }
-                }
-            } catch (e) {
-                // Clipboard read permission might be blocked silently
-            }
-        }
-
-        function pasteFromToast() {
-            const toastText = document.getElementById('clipboard-text').innerText;
-            document.getElementById('url-input').value = toastText;
-            handleInputChange();
-            dismissToast();
-            fetchThumbnail();
-        }
-
-        function dismissToast() {
-            document.getElementById('clipboard-toast').classList.add('hidden');
-        }
-
-        // URL Parser and Video ID Extractor
+        // Extract Video Info (YouTube logic)
         function extractVideoInfo(url) {
             if (!url) return null;
-
-            // YouTube RegEx
             const ytReg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
             const ytMatch = url.match(ytReg);
+            
             if (ytMatch && ytMatch[1]) {
                 return {
                     platform: 'youtube',
                     id: ytMatch[1],
                     resolutions: [
-                        { key: 'maxresdefault', label: 'Max Quality', res: '1280 x 720', tag: 'HD', url: `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg` },
-                        { key: 'sddefault', label: 'Standard SD', res: '640 x 480', tag: 'SD', url: `https://img.youtube.com/vi/${ytMatch[1]}/sddefault.jpg` },
-                        { key: 'hqdefault', label: 'Medium', res: '480 x 360', tag: 'MD', url: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` },
-                        { key: 'mqdefault', label: 'Low', res: '320 x 180', tag: 'LQ', url: `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg` }
+                        { key: 'maxresdefault', label: 'Max Quality', res: '1280x720', tag: 'HD', url: `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg` },
+                        { key: 'sddefault', label: 'Standard', res: '640x480', tag: 'SD', url: `https://img.youtube.com/vi/${ytMatch[1]}/sddefault.jpg` },
+                        { key: 'hqdefault', label: 'Medium', res: '480x360', tag: 'MD', url: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` },
+                        { key: 'mqdefault', label: 'Low', res: '320x180', tag: 'LQ', url: `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg` }
                     ]
                 };
             }
-
-            // Fallback for direct image link input
-            if (url.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
-                return {
-                    platform: 'direct',
-                    id: 'direct_' + Date.now(),
-                    resolutions: [
-                        { key: 'direct', label: 'Original Size', res: 'Native', tag: 'IMG', url: url }
-                    ]
-                };
-            }
-
             return null;
-        }
-
-        function isValidVideoUrl(url) {
-            return extractVideoInfo(url) !== null;
         }
 
         // Fetch Thumbnail Process
@@ -589,7 +563,7 @@
             const videoInfo = extractVideoInfo(inputUrl);
 
             if (!videoInfo) {
-                showToast('Please enter a valid YouTube or video URL', 'error');
+                showToast('Please enter a valid YouTube URL', 'error');
                 return;
             }
 
@@ -597,28 +571,26 @@
             document.getElementById('preview-card').classList.add('hidden');
             document.getElementById('loading-state').classList.remove('hidden');
 
-            // Simulate Network delay for UX smoothness
+            // UX Delay
             await new Promise(r => setTimeout(r, 600));
 
             currentThumbnailData = videoInfo;
             selectedResolutionKey = document.getElementById('setting-default-res')?.value || 'maxresdefault';
 
-            // Ensure selected res key exists in available resolutions
-            if (!videoInfo.resolutions.find(r => r.key === selectedResolutionKey)) {
-                selectedResolutionKey = videoInfo.resolutions[0].key;
-            }
-
-            // Render Preview Card
             renderPreviewCard();
 
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('preview-card').classList.remove('hidden');
 
-            // Save to Local History
-            saveToHistory(videoInfo);
+            // Scroll to view
+            document.getElementById('preview-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if (document.getElementById('setting-savehistory')?.checked) {
+                saveToHistory(videoInfo);
+            }
         }
 
-        // Render Preview & Options
+        // Render the preview section
         function renderPreviewCard() {
             const resOptionsGrid = document.getElementById('resolution-options-grid');
             resOptionsGrid.innerHTML = '';
@@ -627,11 +599,12 @@
                 const isSelected = res.key === selectedResolutionKey;
                 const button = document.createElement('button');
                 button.className = `p-2.5 rounded-xl border text-left transition flex flex-col justify-between ${
-                    isSelected 
-                        ? 'bg-indigo-600/20 border-indigo-500 text-white ring-1 ring-indigo-500' 
-                        : 'bg-slate-900/60 border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+                    isSelected ? 'bg-indigo-600/20 border-indigo-500 text-white ring-1 ring-indigo-500' : 'bg-slate-900/60 border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200'
                 }`;
-                button.onclick = () => selectResolution(res.key);
+                button.onclick = () => {
+                    selectedResolutionKey = res.key;
+                    renderPreviewCard();
+                };
                 button.innerHTML = `
                     <div class="flex items-center justify-between w-full">
                         <span class="text-[11px] font-semibold">${res.label}</span>
@@ -642,43 +615,23 @@
                 resOptionsGrid.appendChild(button);
             });
 
-            updateActivePreviewImage();
-        }
-
-        function selectResolution(resKey) {
-            selectedResolutionKey = resKey;
-            renderPreviewCard();
-        }
-
-        function updateActivePreviewImage() {
-            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
-            const imgElement = document.getElementById('thumbnail-preview-img');
-            
-            // Set image preview
-            imgElement.src = activeRes.url;
-
-            // Update Glassmorphism Badge
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey);
+            document.getElementById('thumbnail-preview-img').src = activeRes.url;
             document.getElementById('badge-resolution-text').innerText = `${activeRes.res} • ${activeRes.tag}`;
-
-            // Update Main Button Text
-            document.getElementById('download-btn-text').innerText = `Download (${activeRes.res})`;
+            document.getElementById('download-btn-text').innerText = `Download (${activeRes.tag})`;
         }
 
-        // Download Action (Canvas-based Trigger for cross-origin saving fallback)
+        // Download Action
         async function downloadImage() {
-            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey);
             const btn = document.getElementById('main-download-btn');
             const originalHTML = btn.innerHTML;
-
-            // Set Loading Feedback
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Preparing Download...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Preparing...</span>`;
 
             try {
-                // Fetch image blob
                 const response = await fetch(activeRes.url);
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(blob);
-
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.download = `SnapThumb_${currentThumbnailData.id}_${activeRes.tag}.jpg`;
@@ -687,80 +640,54 @@
                 document.body.removeChild(link);
                 URL.revokeObjectURL(blobUrl);
 
-                // Success Feedback Animation
                 btn.className = btn.className.replace('bg-indigo-600', 'bg-emerald-500');
                 btn.innerHTML = `<i class="fa-solid fa-check text-lg"></i> <span>Downloaded Successfully!</span>`;
+                showToast('Thumbnail downloaded to your device', 'success');
                 
-                showToast('Thumbnail saved to downloads', 'success');
-
                 setTimeout(() => {
                     btn.className = btn.className.replace('bg-emerald-500', 'bg-indigo-600');
                     btn.innerHTML = originalHTML;
-                }, 2500);
-
+                }, 2000);
             } catch (error) {
-                // Fallback for CORS restricted downloads
+                // CORS Fallback
                 window.open(activeRes.url, '_blank');
                 btn.innerHTML = originalHTML;
-                showToast('Opened image in new tab for direct save', 'info');
+                showToast('Opened image in a new tab for direct save', 'info');
             }
         }
 
-        // Copy Image Link to Clipboard
+        // Copy Direct Link
         function copyImageToClipboard() {
-            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
-            
-            // Legacy/iframe compliant clipboard write
-            const tempInput = document.createElement('input');
-            tempInput.value = activeRes.url;
-            document.body.appendChild(tempInput);
-            tempInput.select();
+            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey);
+            const temp = document.createElement('input');
+            temp.value = activeRes.url;
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            showToast('Direct image URL copied to clipboard!', 'success');
+            document.body.removeChild(temp);
+            showToast('Direct image URL copied!', 'success');
         }
 
-        // Share Thumbnail
-        async function shareThumbnail() {
-            const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey) || currentThumbnailData.resolutions[0];
-            
+        // Share Link
+        function shareThumbnail() {
             if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Video Thumbnail',
-                        text: 'Check out this video thumbnail downloaded via SnapThumb',
-                        url: activeRes.url,
-                    });
-                } catch (err) {
-                    // Share dismissed
-                }
+                const activeRes = currentThumbnailData.resolutions.find(r => r.key === selectedResolutionKey);
+                navigator.share({ title: 'Video Thumbnail', url: activeRes.url }).catch(()=>{});
             } else {
                 copyImageToClipboard();
             }
         }
 
-        // History Storage Logic
+        // History Management Storage
         function saveToHistory(item) {
-            const shouldSave = document.getElementById('setting-savehistory')?.checked ?? true;
-            if (!shouldSave) return;
-
-            // Prevent duplicate entries
             downloadHistory = downloadHistory.filter(h => h.id !== item.id);
-            
-            // Add new item to start
-            const activeRes = item.resolutions.find(r => r.key === selectedResolutionKey) || item.resolutions[0];
             downloadHistory.unshift({
-                id: item.id,
-                platform: item.platform,
-                previewUrl: activeRes.url,
+                id: item.id, platform: item.platform,
+                previewUrl: item.resolutions[0].url,
                 date: new Date().toLocaleDateString(),
                 resolutions: item.resolutions
             });
-
-            // Cap history length at 20 items
             if (downloadHistory.length > 20) downloadHistory.pop();
-
             localStorage.setItem('snapthumb_history', JSON.stringify(downloadHistory));
             updateHistoryBadge();
             renderHistoryGrid();
@@ -779,126 +706,82 @@
 
         function renderHistoryGrid() {
             const grid = document.getElementById('history-grid');
-            const emptyState = document.getElementById('history-empty');
-
             if (downloadHistory.length === 0) {
                 grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
+                document.getElementById('history-empty').classList.remove('hidden');
                 return;
             }
-
-            emptyState.classList.add('hidden');
-            grid.innerHTML = '';
-
-            downloadHistory.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-800 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg group flex flex-col justify-between';
-                card.innerHTML = `
-                    <div class="relative aspect-video w-full overflow-hidden bg-slate-900">
-                        <img src="${item.previewUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
-                        <div class="absolute top-2 right-2 glass px-2 py-1 rounded-md text-[10px] font-bold text-white uppercase">
-                            ${item.platform}
-                        </div>
+            document.getElementById('history-empty').classList.add('hidden');
+            grid.innerHTML = downloadHistory.map((item, i) => `
+                <div class="bg-slate-800 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg group">
+                    <div class="relative aspect-video bg-slate-900">
+                        <img src="${item.previewUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     </div>
                     <div class="p-3.5 flex items-center justify-between">
-                        <span class="text-xs text-slate-400 font-medium"><i class="fa-regular fa-calendar mr-1"></i> ${item.date}</span>
+                        <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> ${item.date}</span>
                         <div class="flex space-x-1">
-                            <button onclick="reloadFromHistory(${index})" class="p-2 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-lg transition text-xs" title="Redownload">
-                                <i class="fa-solid fa-download"></i>
-                            </button>
-                            <button onclick="removeFromHistory(${index})" class="p-2 bg-slate-700 text-slate-400 hover:bg-red-500/20 hover:text-red-400 rounded-lg transition text-xs" title="Delete">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            <button onclick="reloadFromHistory(${i})" class="p-2 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-lg text-xs" title="Reload"><i class="fa-solid fa-download"></i></button>
+                            <button onclick="removeFromHistory(${i})" class="p-2 bg-slate-700 text-slate-400 hover:bg-red-500/20 hover:text-red-400 rounded-lg text-xs" title="Delete"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
+                </div>
+            `).join('');
         }
 
-        function reloadFromHistory(index) {
-            const item = downloadHistory[index];
-            currentThumbnailData = item;
-            selectedResolutionKey = item.resolutions[0].key;
+        function reloadFromHistory(i) {
+            currentThumbnailData = downloadHistory[i];
+            selectedResolutionKey = currentThumbnailData.resolutions[0].key;
             renderPreviewCard();
             switchTab('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function removeFromHistory(index) {
-            downloadHistory.splice(index, 1);
+        function removeFromHistory(i) {
+            downloadHistory.splice(i, 1);
             localStorage.setItem('snapthumb_history', JSON.stringify(downloadHistory));
-            updateHistoryBadge();
-            renderHistoryGrid();
-            showToast('Removed from history', 'info');
+            updateHistoryBadge(); renderHistoryGrid();
+            showToast('Item removed from history', 'info');
         }
 
         function clearHistory() {
             downloadHistory = [];
             localStorage.removeItem('snapthumb_history');
-            updateHistoryBadge();
-            renderHistoryGrid();
+            updateHistoryBadge(); renderHistoryGrid();
             showToast('History cleared', 'info');
         }
 
-        // Batch Processor
+        // Batch processing logic
         function processBatch() {
-            const rawText = document.getElementById('batch-urls').value;
-            const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-            if (lines.length === 0) {
-                showToast('Please insert at least one link', 'error');
-                return;
-            }
-
+            const urls = document.getElementById('batch-urls').value.split('\n').map(l=>l.trim()).filter(l=>l);
             let count = 0;
-            lines.forEach(url => {
+            urls.forEach(url => {
                 const info = extractVideoInfo(url);
-                if (info) {
-                    saveToHistory(info);
-                    count++;
-                }
+                if(info) { saveToHistory(info); count++; }
             });
-
             toggleModal('batch-modal');
-            document.getElementById('batch-urls').value = '';
-
-            if (count > 0) {
-                showToast(`Processed ${count} thumbnails into history`, 'success');
+            if(count > 0) {
+                showToast(`Processed ${count} valid links successfully`, 'success');
                 switchTab('history');
+                document.getElementById('batch-urls').value = '';
             } else {
-                showToast('No valid YouTube links found', 'error');
+                showToast('No valid URLs found', 'error');
             }
         }
 
-        // Toast Notification System
-        function showToast(message, type = 'info') {
+        // Toast Notification Display
+        function showToast(msg, type='info') {
             const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+            const t = document.createElement('div');
+            const icon = type==='success' ? 'fa-check text-emerald-400' : type==='error' ? 'fa-xmark text-red-400' : 'fa-info text-indigo-400';
+            const border = type==='success' ? 'border-emerald-500/50' : type==='error' ? 'border-red-500/50' : 'border-indigo-500/50';
             
-            let bgClass = 'bg-slate-800 border-slate-700 text-white';
-            let icon = 'fa-circle-info text-indigo-400';
-
-            if (type === 'success') {
-                bgClass = 'bg-slate-800 border-emerald-500/50 text-white';
-                icon = 'fa-circle-check text-emerald-400';
-            } else if (type === 'error') {
-                bgClass = 'bg-slate-800 border-red-500/50 text-white';
-                icon = 'fa-circle-exclamation text-red-400';
-            }
-
-            toast.className = `pointer-events-auto px-4 py-3 rounded-2xl border ${bgClass} shadow-xl flex items-center space-x-3 text-xs sm:text-sm font-medium animate-slide-up transition-all duration-300`;
-            toast.innerHTML = `
-                <i class="fa-solid ${icon} text-base"></i>
-                <span>${message}</span>
-            `;
-
-            container.appendChild(toast);
-
+            t.className = `pointer-events-auto px-4 py-3 rounded-xl border bg-slate-800 ${border} text-white shadow-xl flex items-center space-x-3 text-xs sm:text-sm font-medium transition-all duration-300`;
+            t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+            container.appendChild(t);
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(10px)';
+                setTimeout(() => t.remove(), 300);
+            }, 2500);
         }
     </script>
 </body>
